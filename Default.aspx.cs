@@ -20,27 +20,27 @@ public partial class _Default : Page
 
     }
 
-    public void ShowResultsBttn_Click(object sender, EventArgs e)
+    public async void ShowResultsBttn_Click(object sender, EventArgs e)
     {
-        Console.Write("I was clicked!");
+        // Save image url
         String emotionPhoto = EmotionPhoto.Text;
 
         try
         {
-            System.Diagnostics.Debug.WriteLine("Trying to send request");
-            MakeRequest(emotionPhoto);
-            System.Diagnostics.Debug.WriteLine("After Request ");
-            Console.Read();
+            // Make API request
+            String results= await MakeRequest(emotionPhoto);
+
+            System.Diagnostics.Debug.WriteLine("RESULTS: " + results);
         }
         catch (Exception exception)
         {
-            Console.Write("Detection failed. Please make sure that you have the right subscription key and proper URL to detect.");
-            Console.Write(exception.ToString());
+            System.Diagnostics.Debug.WriteLine("Detection failed. Please make sure that you have the right subscription key and proper URL to detect.");
+            System.Diagnostics.Debug.WriteLine(exception.Message);
         }
     }
 
 
-    static async void MakeRequest(String photo)
+    static async Task<String> MakeRequest(String photo)
     {
         var client = new HttpClient();
         var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -57,16 +57,21 @@ public partial class _Default : Page
         String format = "\"url\":";
         String requestBody= String.Format("{0} {1}", format, picURL);
         requestBody = "{" + requestBody + "}";
-
-        System.Diagnostics.Debug.WriteLine("requestBody: " + requestBody);
-
-        // Request body
         byte[] byteData = Encoding.UTF8.GetBytes(requestBody);
 
+        // Send request
         using (var content = new ByteArrayContent(byteData))
         {
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             response = await client.PostAsync(uri, content).ConfigureAwait(false);
         }
+
+        // Convert response to string
+        HttpContent results = response.Content;
+        var res1 = await results.ReadAsStringAsync();
+        var res2 = Newtonsoft.Json.JsonConvert.DeserializeObject(res1);
+        String res3 = res2.ToString();
+
+        return res3;
     }
 }
