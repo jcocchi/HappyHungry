@@ -12,6 +12,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Newtonsoft.Json;
 
 public partial class _Default : Page
 {
@@ -29,12 +30,14 @@ public partial class _Default : Page
         {
             // Make API request
             String results= await MakeRequest(emotionPhoto);
-
             System.Diagnostics.Debug.WriteLine("RESULTS: " + results);
+
+            // Parse results
+            String emotion= ParseResults(results);
+            System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
         }
         catch (Exception exception)
         {
-            System.Diagnostics.Debug.WriteLine("Detection failed. Please make sure that you have the right subscription key and proper URL to detect.");
             System.Diagnostics.Debug.WriteLine(exception.Message);
         }
     }
@@ -69,9 +72,53 @@ public partial class _Default : Page
         // Convert response to string
         HttpContent results = response.Content;
         var res1 = await results.ReadAsStringAsync();
-        var res2 = Newtonsoft.Json.JsonConvert.DeserializeObject(res1);
-        String res3 = res2.ToString();
 
-        return res3;
+        return res1;
+    }
+
+
+    /*
+     *
+     * Sample response for reference when parsing out emotion/ score pairs
+          [
+            {
+              "faceRectangle": {
+                "left": 68,
+                "top": 97,
+                "width": 64,
+                "height": 97
+              },
+              "scores": {
+                "anger": 0.00300731952,
+                "contempt": 5.14648448E-08,
+                "disgust": 9.180124E-06,
+                "fear": 0.0001912825,
+                "happiness": 0.9875571,
+                "neutral": 0.0009861537,
+                "sadness": 1.889955E-05,
+                "surprise": 0.008229999
+              }
+            }
+          ]
+     * 
+     */
+    static String ParseResults(String results)
+    {
+        //TODO: First, check if it is an invalid image, in this case it will return "[]"
+
+        // JSON object to store API response
+        EmotionSet emotions = new EmotionSet(); 
+
+        // Populate a JSON object with the results of the API call
+        results= results.TrimStart('[');
+        results= results.TrimEnd(']');
+        JsonConvert.PopulateObject(results, emotions);
+
+        // Find top score 
+        String topEmotion= emotions.getTopScore();
+        System.Diagnostics.Debug.WriteLine("top emotion: " + topEmotion);
+
+        return topEmotion;
     }
 }
+ 
