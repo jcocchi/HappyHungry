@@ -35,6 +35,11 @@ public partial class _Default : Page
             // Parse results
             String emotion= ParseResults(results);
             System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
+
+            if (emotion == null)
+            {
+                System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
+            }
         }
         catch (Exception exception)
         {
@@ -79,7 +84,7 @@ public partial class _Default : Page
 
     /*
      *
-     * Sample response for reference when parsing out emotion/ score pairs
+     * Sample success response for reference
           [
             {
               "faceRectangle": {
@@ -104,19 +109,25 @@ public partial class _Default : Page
      */
     static String ParseResults(String results)
     {
-        //TODO: First, check if it is an invalid image, in this case it will return "[]"
-
         // JSON object to store API response
-        EmotionSet emotions = new EmotionSet(); 
+        EmotionSet emotions = new EmotionSet();
+        // String to store top emotion
+        String topEmotion = null;
 
-        // Populate a JSON object with the results of the API call
-        results= results.TrimStart('[');
+        // Prepare result string for JSON conversion
+        results = results.TrimStart('[');
         results= results.TrimEnd(']');
-        JsonConvert.PopulateObject(results, emotions);
 
-        // Find top score 
-        String topEmotion= emotions.getTopScore();
-        System.Diagnostics.Debug.WriteLine("top emotion: " + topEmotion);
+        // Make sure it was a good response, an invalid image will return "[]"
+        if (results.Length > 1)
+        {
+            // Populate a JSON object with the results of the API call
+            JsonConvert.PopulateObject(results, emotions);
+
+            // Find top score 
+            topEmotion = emotions.getTopScore();
+            System.Diagnostics.Debug.WriteLine("top emotion: " + topEmotion);
+        }
 
         return topEmotion;
     }
