@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Newtonsoft.Json;
+using WebSite1;
 
 public partial class _Default : Page
 {
@@ -29,21 +30,32 @@ public partial class _Default : Page
         try
         {
             // Make API request
-            String results= await MakeRequest(emotionPhoto);
+            String results = await MakeRequest(emotionPhoto);
             System.Diagnostics.Debug.WriteLine("RESULTS: " + results);
 
             // Parse results
-            String emotion= ParseResults(results);
+            String emotion = ParseResults(results);
             System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
 
+            // Pick food to suggest
+            String foodSuggestion = null;
             if (emotion == null)
             {
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
+            } else
+            {
+               foodSuggestion = MakeSuggestion(emotion);
             }
+            System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + foodSuggestion);
+
         }
-        catch (Exception exception)
+        catch (NullReferenceException ex)
         {
-            System.Diagnostics.Debug.WriteLine(exception.Message);
+            System.Diagnostics.Debug.WriteLine("Null Reference: " + ex.Message);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.Message);
         }
     }
 
@@ -130,6 +142,44 @@ public partial class _Default : Page
         }
 
         return topEmotion;
+    }
+
+
+    static String MakeSuggestion(String emotion)
+    {
+        // First set the file path
+        String suggestion = "C:\\Users\\jucocchi\\Documents\\Visual Studio 15\\WebSites\\WebSite1\\Pictures\\";
+
+        // Now decide which image to use based on the emotion in the picture
+        switch (emotion)
+        {
+            case "anger":
+                suggestion += "steak.jpg";          // Steak
+                break;
+            case "contempt":                
+                suggestion += "waffles.jpg";        // Waffles
+                break;
+            case "disgust":
+                suggestion += "salad.jpg";          // Salad
+                break;
+            case "fear":
+                suggestion += "lollipop.jpg";       // Scorpion Lollipop
+                break;
+            case "happiness":
+                suggestion += "burger.jpg";         // Hamburger
+                break;
+            case "neutral":
+                suggestion += "water.jpg";          // Water
+                break;
+            case "sadness":
+                suggestion += "chocolate.jpg";      // Chocolate
+                break;
+            case "surprise":
+                suggestion += "pizza.jpg";          // Breakfast Pizza
+                break;
+        }
+
+        return suggestion;
     }
 }
  

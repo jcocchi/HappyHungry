@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 /// Classes to parse JSON object
 /// </summary>
 
+namespace WebSite1
+{
     public class FaceRectangle
     {
         private int left { get; set; }
@@ -37,7 +39,7 @@ using Newtonsoft.Json;
                                            happiness,
                                            neutral,
                                            sadness,
-                                           surprise }; 
+                                           surprise };
 
             // Find top emotion
             int topEmotion = 0;
@@ -47,10 +49,11 @@ using Newtonsoft.Json;
                 {
                     topEmotion = i;
                 }
-            } 
+            }
 
             // Return top emotion
-            switch (topEmotion) {
+            switch (topEmotion)
+            {
                 case 0:
                     return "anger";
                 case 1:
@@ -71,7 +74,7 @@ using Newtonsoft.Json;
 
             return null;
         }
-}
+    }
 
     [JsonObject]
     public class EmotionSet
@@ -86,3 +89,4 @@ using Newtonsoft.Json;
             return scores.Max();
         }
     }
+}
