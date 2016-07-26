@@ -22,9 +22,10 @@
         </div>
         <div class="col-md-6">
             <h2>Results</h2>
-            <p>
-                Based on your image, you're craving a...
-            </p><br>
+
+            <asp:TextBox ID="Results" TextMode="MultiLine" Columns="100" Rows="3" runat="server" /><br>
+
+            <asp:Image ID="SuggestedFood" Width="500px" runat="server" />
         </div>
     </div>
 </asp:Content>

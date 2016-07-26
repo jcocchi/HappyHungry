@@ -5,9 +5,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Threading.Tasks;
-using Microsoft.ProjectOxford.Emotion;
-using Microsoft.ProjectOxford.Emotion.Contract;
-using Microsoft.ProjectOxford.Common;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -37,17 +34,24 @@ public partial class _Default : Page
             String emotion = ParseResults(results);
             System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
 
-            // Pick food to suggest
-            String foodSuggestion = null;
-            if (emotion == null)
+            // Display error message to the user if no emotion was found
+            if (emotion == null)  
             {
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
-            } else
-            {
-               foodSuggestion = MakeSuggestion(emotion);
-            }
-            System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + foodSuggestion);
 
+                Results.Text = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
+            }
+            // Otherwise pick the food to suggest and display it to the user
+            else
+            {
+                Suggestion suggestion = MakeSuggestion(emotion);
+                System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION DESCRIPTION: " + suggestion.description);
+                System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + suggestion.link);
+
+                Results.Text = suggestion.description;
+                SuggestedFood.ImageUrl = suggestion.link;
+            }
+                       
         }
         catch (NullReferenceException ex)
         {
@@ -145,39 +149,50 @@ public partial class _Default : Page
     }
 
 
-    static String MakeSuggestion(String emotion)
+    static Suggestion MakeSuggestion(String emotion)
     {
-        // First set the file path
-        String suggestion = "C:\\Users\\jucocchi\\Documents\\Visual Studio 15\\WebSites\\WebSite1\\Pictures\\";
+        String link = null;
+        String description = null;
 
-        // Now decide which image to use based on the emotion in the picture
+        // Decide which image to use based on the emotion in the picture
         switch (emotion)
         {
             case "anger":
-                suggestion += "steak.jpg";          // Steak
+                link = "http://swansonquotes.com/wp-content/uploads/s03-ep12-hometown1-1000x500.jpg";
+                description = "It looks like you're feeling angry. Let your anger out by cutting up a nice juicy steak!";
                 break;
-            case "contempt":                
-                suggestion += "waffles.jpg";        // Waffles
+            case "contempt":
+                link = "http://cdn2.thegrindstone.com/wp-content/uploads/2012/11/leslie-knope-waffles.jpg";
+                description = "What's a better way to stop feeling contempt than to eat a huge plate of waffles?";
                 break;
             case "disgust":
-                suggestion += "salad.jpg";          // Salad
+                link = "http://www.eatmedaily.com/wordpress/wp-content/uploads/2009/03/simpsons-food-faces.jpg";
+                description = "No one blames you for feeling disgusted when you're so hungry, try a nice salad to turn your day around!";
                 break;
             case "fear":
-                suggestion += "lollipop.jpg";       // Scorpion Lollipop
+                link = "https://s-media-cache-ak0.pinimg.com/564x/e0/52/05/e05205817d704c30d3b88c35e7c8e4e2.jpg";
+                description = "It looks like you're feeling a little scared. Face your fears by eating a scorpion lollipop!";
                 break;
             case "happiness":
-                suggestion += "burger.jpg";         // Hamburger
+                link = "http://i.onionstatic.com/avclub/5745/19/16x9/960.jpg";
+                description = "There is no better way to celebrate feeling happy than by enjoying a gigantic hamburger!";
                 break;
             case "neutral":
-                suggestion += "water.jpg";          // Water
+                link = "http://www.shapeme.com.au/blog/wp-content/uploads/2015/05/water-glass-drinking-58690800888_xlarge.jpeg";
+                description = "You're feeling neutral so you should stick to plain foods...like water.";
                 break;
             case "sadness":
-                suggestion += "chocolate.jpg";      // Chocolate
+                link = "https://i.ytimg.com/vi/KIBy-thiS3I/hqdefault.jpg";
+                description = "No one likes being sad, have some chocolate to turn your day around!";
                 break;
             case "surprise":
-                suggestion += "pizza.jpg";          // Breakfast Pizza
+                link = "http://i.huffpost.com/gadgets/slideshows/363949/slide_363949_4114801_free.jpg";
+                description = "You look suprised, have a fun fusion food like a breakfast pizza!";
                 break;
         }
+
+        // Store suggestion
+        Suggestion suggestion = new Suggestion(link, description);
 
         return suggestion;
     }
