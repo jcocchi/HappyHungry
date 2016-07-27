@@ -48,7 +48,7 @@ public partial class _Default : Page
                 System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION DESCRIPTION: " + suggestion.description);
                 System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + suggestion.link);
 
-                Results.Text = suggestion.description;
+                PResults.InnerText = suggestion.description;
                 SuggestedFood.ImageUrl = suggestion.link;
             }
                        
