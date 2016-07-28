@@ -39,7 +39,7 @@ public partial class _Default : Page
             {
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
 
-                Results.Text = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
+                PResults.InnerText = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
             }
             // Otherwise pick the food to suggest and display it to the user
             else
