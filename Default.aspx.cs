@@ -40,12 +40,12 @@ public partial class _Default : Page
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
 
                 String oops= "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
-                //PResults.InnerText = oops;
+                String link = "http://i0.kym-cdn.com/photos/images/original/000/925/410/4cc.jpg";
 
                 // Pass necessary info to the results page
                 HttpContext CurrContext = HttpContext.Current;
                 CurrContext.Items.Add("Description", oops);
-                CurrContext.Items.Add("Link", null);
+                CurrContext.Items.Add("Link", link);
                 Server.Transfer("Results.aspx", true);
             }
             // Otherwise pick the food to suggest and display it to the user
@@ -54,9 +54,6 @@ public partial class _Default : Page
                 Suggestion suggestion = MakeSuggestion(emotion);
                 System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION DESCRIPTION: " + suggestion.description);
                 System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + suggestion.link);
-
-                //PResults.InnerText = suggestion.description;
-                //SuggestedFood.ImageUrl = suggestion.link;
 
                 // Pass necessary info to the results page
                 HttpContext CurrContext = HttpContext.Current;
