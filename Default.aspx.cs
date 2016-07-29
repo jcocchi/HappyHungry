@@ -21,9 +21,6 @@ public partial class _Default : Page
 
     public async void ShowResultsBttn_Click(object sender, EventArgs e)
     {
-        //Server.Transfer("Results.aspx", true);
-
-
         // Save image url
         String emotionPhoto = EmotionPhoto.Text;
 
@@ -42,7 +39,14 @@ public partial class _Default : Page
             {
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
 
-                PResults.InnerText = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
+                String oops= "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
+                //PResults.InnerText = oops;
+
+                // Pass necessary info to the results page
+                HttpContext CurrContext = HttpContext.Current;
+                CurrContext.Items.Add("Description", oops);
+                CurrContext.Items.Add("Link", null);
+                Server.Transfer("Results.aspx", true);
             }
             // Otherwise pick the food to suggest and display it to the user
             else
@@ -51,10 +55,17 @@ public partial class _Default : Page
                 System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION DESCRIPTION: " + suggestion.description);
                 System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + suggestion.link);
 
-                PResults.InnerText = suggestion.description;
-                SuggestedFood.ImageUrl = suggestion.link;
+                //PResults.InnerText = suggestion.description;
+                //SuggestedFood.ImageUrl = suggestion.link;
+
+                // Pass necessary info to the results page
+                HttpContext CurrContext = HttpContext.Current;
+                CurrContext.Items.Add("Description", suggestion.description);
+                CurrContext.Items.Add("Link", suggestion.link);
+                Server.Transfer("Results.aspx", true);
             }
-                       
+
+            
         }
         catch (NullReferenceException ex)
         {

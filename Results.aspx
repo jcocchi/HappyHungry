@@ -3,8 +3,10 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Results</h2>
     
-    <p id="PResults" runat="server"></p></br>
-    <asp:Image ID="SuggestedFood" Width="500px" runat="server" />
+    <div class="col-md-6">
+        <p id="PResults" runat="server"></p></br>
+        <asp:Image ID="SuggestedFood" Width="500px" runat="server" /></br>
 
-    <asp:Button ID="BackButton" runat="server" OnClick="BackBttn_Click" Text="Back" CssClass="btn btn-default"/>
+        <asp:Button ID="BackButton" runat="server" OnClick="BackBttn_Click" Text="Back" CssClass="btn btn-default"/>
+    </div>
 </asp:Content>

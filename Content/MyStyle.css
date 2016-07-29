@@ -5,6 +5,8 @@
 
 
 .col-md-6 {
+    width: 100%;
+    margin: auto;
     text-align: center;
 }
 
@@ -22,12 +24,6 @@
   color: #e6f2ff;
   background-color: #001a33;
 }
-
-
-p {
-    text-align: left;
-}
-
 
 h2 {
     font-size: 40px;

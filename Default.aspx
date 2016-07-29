@@ -11,11 +11,5 @@
                 <asp:TextBox ID="EmotionPhoto" runat="server"/><br> 
                 <asp:Button ID="ShowResultsBttn" runat="server" OnClick="ShowResultsBttn_Click" Text="Show Results" CssClass="btn btn-default"/><br>
             </div>
-            <div class="col-md-6">
-                <h2>Results</h2>
-    
-                <p id="PResults" runat="server"></p></br>
-                <asp:Image ID="SuggestedFood" Width="500px" runat="server" />
-            </div> 
         </div>
 </asp:Content>

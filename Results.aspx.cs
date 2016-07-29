@@ -16,12 +16,32 @@ public partial class Results : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        try
+        {
+            HttpContext CurrContext = HttpContext.Current;
+            String description = CurrContext.Items["Description"].ToString();
+            String link = CurrContext.Items["Link"].ToString();
 
+            if (description != null)
+            {
+                //Response.Write(CurrContext.Items["Name"].ToString() + "<br/>");
+                //Response.Write(CurrContext.Items["Address"].ToString());
+
+                PResults.InnerText = description;
+                SuggestedFood.ImageUrl = link;
+
+                //PResults.InnerText = "Hello World";
+                //SuggestedFood.ImageUrl = "http://newsrescue.com/wp-content/uploads/2015/04/happy-person.jpg";
+            }
+        } catch (Exception ex)
+        {
+            System.Diagnostics.Debug.Write("Results Page Load Error: " + ex.Message);
+        }
     }
 
     public void BackBttn_Click(object sender, EventArgs e)
     {
-        Server.Transfer("Results.aspx", true);
+        Server.Transfer("Default.aspx", true);
     }
 
 }
