@@ -21,6 +21,9 @@ public partial class _Default : Page
 
     public async void ShowResultsBttn_Click(object sender, EventArgs e)
     {
+        //Server.Transfer("Results.aspx", true);
+
+
         // Save image url
         String emotionPhoto = EmotionPhoto.Text;
 
@@ -60,7 +63,7 @@ public partial class _Default : Page
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine(ex.Message);
-        }
+        } 
     }
 
 
@@ -99,7 +102,6 @@ public partial class _Default : Page
 
 
     /*
-     *
      * Sample success response for reference
           [
             {
@@ -195,6 +197,6 @@ public partial class _Default : Page
         Suggestion suggestion = new Suggestion(link, description);
 
         return suggestion;
-    }
+    } 
 }
  

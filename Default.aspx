@@ -16,6 +16,6 @@
     
                 <p id="PResults" runat="server"></p></br>
                 <asp:Image ID="SuggestedFood" Width="500px" runat="server" />
-            </div>
+            </div> 
         </div>
 </asp:Content>
