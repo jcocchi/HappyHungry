@@ -34,35 +34,17 @@ public partial class _Default : Page
             String emotion = ParseResults(results);
             System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
 
-            // Display error message to the user if no emotion was found
-            if (emotion.Equals(""))
-            {
-                System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
+            // Decide which description and picture to display
+            Suggestion suggestion = MakeSuggestion(emotion);
+            System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION DESCRIPTION: " + suggestion.description);
+            System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + suggestion.link);
 
-                String oops = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
-                String link = "http://i0.kym-cdn.com/photos/images/original/000/925/410/4cc.jpg";
-
-                // Pass necessary info to the results page
-                HttpContext CurrContext = HttpContext.Current;
-                CurrContext.Items.Add("Description", oops);
-                CurrContext.Items.Add("Link", link);
-                Server.Transfer("Results.aspx", true);
-            }
-            // Otherwise pick the food to suggest and display it to the user
-            else
-            {
-                Suggestion suggestion = MakeSuggestion(emotion);
-                System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION DESCRIPTION: " + suggestion.description);
-                System.Diagnostics.Debug.WriteLine("FOOD SUGGESTION FILEPATH: " + suggestion.link);
-
-                // Pass necessary info to the results page
-                HttpContext CurrContext = HttpContext.Current;
-                CurrContext.Items.Add("Description", suggestion.description);
-                CurrContext.Items.Add("Link", suggestion.link);
-                Server.Transfer("Results.aspx");
-            }
+            // Pass necessary info to the results page and display page
+            HttpContext CurrContext = HttpContext.Current;
+            CurrContext.Items.Add("Description", suggestion.description);
+            CurrContext.Items.Add("Link", suggestion.link);
+            Server.Transfer("Results.aspx");
         }
-
         catch (NullReferenceException ex)
         {
             System.Diagnostics.Debug.WriteLine("Null Reference: " + ex.Message);
@@ -198,6 +180,10 @@ public partial class _Default : Page
             case "surprise":
                 link = "http://i.huffpost.com/gadgets/slideshows/363949/slide_363949_4114801_free.jpg";
                 description = "You look suprised, have a fun fusion food like a breakfast pizza!";
+                break;
+            case "":
+                link = "http://i0.kym-cdn.com/photos/images/original/000/925/410/4cc.jpg";
+                description = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
                 break;
         }
 
