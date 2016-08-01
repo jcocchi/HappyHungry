@@ -35,7 +35,7 @@ public partial class _Default : Page
             System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
 
             // Display error message to the user if no emotion was found
-            if (emotion == null)
+            if (emotion.Equals(""))
             {
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
 
@@ -137,14 +137,15 @@ public partial class _Default : Page
         // JSON object to store API response
         EmotionSet emotions = new EmotionSet();
         // String to store top emotion
-        String topEmotion = null;
+        String topEmotion = "";
 
         // Prepare result string for JSON conversion
         results = results.TrimStart('[');
         results= results.TrimEnd(']');
 
-        // Make sure it was a good response, an invalid image will return "[]"
-        if (results.Length > 1)
+        // Make sure it was a good response
+        // An invalid image will return "[]" and an invalid link will return an error code
+        if (!results.Contains("error") && results.Length > 2)
         {
             // Populate a JSON object with the results of the API call
             JsonConvert.PopulateObject(results, emotions);
