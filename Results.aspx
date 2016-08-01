@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Results Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" Async="true" CodeFile="Results.aspx.cs" Inherits="Results" %>
+﻿<%@ Page Title="Results Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" Async="true" CodeFile="Results.aspx.cs" Inherits="Results" EnableEventValidation="false" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Results</h2>

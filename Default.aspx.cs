@@ -60,6 +60,7 @@ public partial class _Default : Page
                 CurrContext.Items.Add("Description", suggestion.description);
                 CurrContext.Items.Add("Link", suggestion.link);
                 Server.Transfer("Results.aspx", true);
+                //Response.Redirect("Results.aspx", true);
             }
 
             

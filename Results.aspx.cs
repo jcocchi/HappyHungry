@@ -18,30 +18,41 @@ public partial class Results : System.Web.UI.Page
     {
         try
         {
-            HttpContext CurrContext = HttpContext.Current;
-            String description = CurrContext.Items["Description"].ToString();
-            String link = CurrContext.Items["Link"].ToString();
-
-            if (description != null)
+            if (Context.Items.Contains("Description"))
             {
-                //Response.Write(CurrContext.Items["Name"].ToString() + "<br/>");
-                //Response.Write(CurrContext.Items["Address"].ToString());
+                String description = Context.Items["Description"].ToString();
+                String link = Context.Items["Link"].ToString();
 
-                PResults.InnerText = description;
-                SuggestedFood.ImageUrl = link;
-
-                //PResults.InnerText = "Hello World";
-                //SuggestedFood.ImageUrl = "http://newsrescue.com/wp-content/uploads/2015/04/happy-person.jpg";
+                if (description != null)
+                {
+                    PResults.InnerText = description;
+                    SuggestedFood.ImageUrl = link;
+                }
             }
-        } catch (Exception ex)
+        } catch (NullReferenceException ex)
         {
-            System.Diagnostics.Debug.Write("Results Page Load Error: " + ex.Message);
+            System.Diagnostics.Debug.Write("Results Page Null Reference Exception: " + ex.Message);
+
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.Write("Results Page Exception: " + ex.Message);
         }
     }
 
     public void BackBttn_Click(object sender, EventArgs e)
     {
-        Server.Transfer("Default.aspx", true);
+        try
+        {
+            System.Diagnostics.Debug.Write("SHOULD REDIRECT TO THE DEFAULT PAGE");
+            Response.Redirect("Default.aspx");
+        } catch (InvalidOperationException ex)
+        {
+            System.Diagnostics.Debug.Write("Back Button Invalid Operation Exception: " + ex.Message);
+        } catch (Exception ex)
+        {
+            System.Diagnostics.Debug.Write("Back Button Exception: " + ex.Message);
+        }
     }
 
 }
