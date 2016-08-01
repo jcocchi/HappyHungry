@@ -28,6 +28,9 @@ public partial class Results : System.Web.UI.Page
                     PResults.InnerText = description;
                     SuggestedFood.ImageUrl = link;
                 }
+            } else // Page should never load unless it is displaying results from a query
+            {
+                Response.Redirect("Default.aspx");
             }
         } catch (NullReferenceException ex)
         {
@@ -46,6 +49,7 @@ public partial class Results : System.Web.UI.Page
         {
             System.Diagnostics.Debug.Write("SHOULD REDIRECT TO THE DEFAULT PAGE");
             Response.Redirect("Default.aspx");
+            //Server.Transfer("Default.aspx");
         } catch (InvalidOperationException ex)
         {
             System.Diagnostics.Debug.Write("Back Button Invalid Operation Exception: " + ex.Message);

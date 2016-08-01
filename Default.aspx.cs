@@ -35,11 +35,11 @@ public partial class _Default : Page
             System.Diagnostics.Debug.WriteLine("EMOTION: " + emotion);
 
             // Display error message to the user if no emotion was found
-            if (emotion == null)  
+            if (emotion == null)
             {
                 System.Diagnostics.Debug.WriteLine("BAD PICTURE, COULDN'T FIND AN EMOTION");
 
-                String oops= "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
+                String oops = "Oops something went wrong! Please make sure that you submitted the correct image link and that your face is both promienent in the image and unobstructed. Submit another link to try again!";
                 String link = "http://i0.kym-cdn.com/photos/images/original/000/925/410/4cc.jpg";
 
                 // Pass necessary info to the results page
@@ -59,12 +59,12 @@ public partial class _Default : Page
                 HttpContext CurrContext = HttpContext.Current;
                 CurrContext.Items.Add("Description", suggestion.description);
                 CurrContext.Items.Add("Link", suggestion.link);
-                Server.Transfer("Results.aspx", true);
-                //Response.Redirect("Results.aspx", true);
+                Server.Transfer("Results.aspx");
+                //Response.Redirect("Results.aspx");
             }
-
-            
         }
+
+
         catch (NullReferenceException ex)
         {
             System.Diagnostics.Debug.WriteLine("Null Reference: " + ex.Message);
